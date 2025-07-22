@@ -238,6 +238,10 @@ vim.opt.rtp:prepend(lazypath)
 --  To update plugins you can run
 --    :Lazy update
 --
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = { '*.c', '*.h' },
+  command = 'silent! call CFormatter42()',
+})
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -260,9 +264,28 @@ require('lazy').setup({
   --            })
   --        end,
   --    }
-  --
+  -- 42Header
+  {
+    'Diogo-ss/42-header.nvim',
+    cmd = { 'Stdheader' },
+    keys = { '<F1>' },
+    opts = {
+      default_map = true, -- Default mapping <F1> in normal mode.
+      auto_update = true, -- Update header when saving.
+      user = 'fde-sist', -- Your user.
+      mail = 'fde-sist@student.42roma.it', -- Your mail.
+      -- add other options.
+    },
+    config = function(_, opts)
+      require('42header').setup(opts)
+    end,
+  },
   -- norminette setup
   { 'hardyrafael17/norminette42.nvim' },
+  -- ensure programs are formatted on save
+  {
+    'cacharle/c_formatter_42.vim',
+  },
   -- harpoon2 setup
   {
     'ThePrimeagen/harpoon',
